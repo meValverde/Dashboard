@@ -1,0 +1,54 @@
+﻿@using Dashboard.Models
+@model DashboardValues
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+ <table class=table>
+        <thead>
+            <tr>
+                
+                <th>Date</th>
+                <th>Total Energy</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var energy in Model.Energy)
+            {
+                <tr>
+                    <td>@energy.Date</td>
+                    <td>@energy.TotalEnergy</td>
+                   
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <table class=table>
+        <thead>
+            <tr>
+                
+                <th>Temperature</th>
+                <th>Conditions</th>
+                <th>Cloud Cover</th>
+                <th>Precipitation</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var forecast in Model.Forecast)
+            {
+                <tr>
+                    <td>@forecast.temp</td>
+                    <td>@forecast.conditions</td>
+                    <td>@forecast.cloudcover</td>
+                    <td>@forecast.precip</td>
+                </tr>
+            }
+        </tbody>
+    </table>
