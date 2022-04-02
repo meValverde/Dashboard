@@ -1,10 +1,13 @@
 ﻿using Dashboard.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using Newtonsoft.Json;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http;
 using System.Net.Http.Headers;
+
 
 namespace Dashboard.Controllers
 {
@@ -49,11 +52,41 @@ namespace Dashboard.Controllers
                 var response = await client.PostAsync("https://localhost:7195/forecast/kolding",null);
                 var responseString = await response.Content.ReadAsStringAsync();
 
+                
 
                 model.Forecast = JsonConvert.DeserializeObject<List<ForecastValues>>(responseString);
 
             }
 
+            //GET SQL
+            
+           
+            DateTime test = DateTime.Now;
+
+            using (var ctx = new indeklimaContext())
+            {
+                var temp = ctx.Temperaturs
+                                .Where(s => s.Dato == test).ToList();
+
+                int lastTemp = temp.Count - 1;
+
+                List<Temperatur> temperatura = new List<Temperatur>();
+                temperatura.Add(new Temperatur
+                {
+                    Dato = temp[lastTemp].Dato,
+                    Tidspunkt = temp[lastTemp].Tidspunkt,
+                    Grader = temp[lastTemp].Grader
+
+                }
+
+                    );
+                model.Temperature = temperatura;
+                
+
+            }
+            
+            
+            
 
             return View(model);
         }

@@ -21,5 +21,6 @@ namespace Dashboard.Models
     { 
         public List <EnergyValues>? Energy { get; set; }
         public List <ForecastValues>? Forecast { get; set; }
+        public List <Temperatur>? Temperature { get; set; }
     }
 }

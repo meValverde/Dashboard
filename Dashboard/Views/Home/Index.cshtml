@@ -52,3 +52,56 @@
             }
         </tbody>
     </table>
+
+     <table class=table>
+        <thead>
+            <tr>
+                
+                <th>Date</th>
+                <th>Time</th>
+                <th>Degrees C</th>
+  
+            </tr>
+        </thead>
+        <tbody>
+
+        
+            @foreach (var temperature in Model.Temperature)
+            {
+                <tr>
+                    <td>@temperature.Dato</td>
+                    <td>@temperature.Tidspunkt</td>
+                    <td>@temperature.Grader</td>
+                   
+        
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+
+
+     <table class=table>
+        <thead>
+            <tr>
+                
+                <th>Date</th>
+                <th>Time</th>
+                <th>Degrees C</th>
+  
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var temperature in Model.Temperature)
+            {
+                <tr>
+                    <td>@temperature.Dato</td>
+                    <td>@temperature.Tidspunkt</td>
+                    <td>@temperature.Grader</td>
+                   
+        
+                </tr>
+            }
+        </tbody>
+    </table>
