@@ -5,103 +5,148 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Dashboard</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
- <table class=table>
-        <thead>
-            <tr>
-                
-                <th>Date</th>
-                <th>Total Energy</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var energy in Model.Energy)
-            {
+
+<div class ="row g-5 g-xxl-10">
+    <div class = "col-xl-4 mb-xl-5 mb-xxl-10">
+
+
+        <div class = "card card-flush h-xl-100">
+            <div style="margin:20px;">
+          
+                <h3>
+                    Energy production
+                </h3>
+                <p>Energy produced today in the last hour</p>
+        
+         <table class=table>
+            <thead>
                 <tr>
-                    <td>@energy.Date</td>
-                    <td>@energy.TotalEnergy</td>
+                
+                    <th>Date</th>
+                    <th>Total Energy</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var energy in Model.Energy)
+                {
+                    <tr>
+                        <td>@energy.Date</td>
+                        <td>@energy.TotalEnergy</td>
                    
-                </tr>
-            }
-        </tbody>
-    </table>
+                 </tr>
+              }
+           </tbody>
+           </table>
+           </div>
+        </div>
 
-    <table class=table>
-        <thead>
-            <tr>
-                
-                <th>Temperature</th>
-                <th>Conditions</th>
-                <th>Cloud Cover</th>
-                <th>Precipitation</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var forecast in Model.Forecast)
-            {
-                <tr>
-                    <td>@forecast.temp</td>
-                    <td>@forecast.conditions</td>
-                    <td>@forecast.cloudcover</td>
-                    <td>@forecast.precip</td>
-                </tr>
-            }
-        </tbody>
-    </table>
 
-     <table class=table>
-        <thead>
-            <tr>
+
+        <div class="card card-flush h-xl-100" style="margin:10px;">
+            <div style="margin:20px;">
+            <h3>Last room temperature</h3>
+            <table class=table>
+             <thead>
+                  <tr>
                 
-                <th>Date</th>
-                <th>Time</th>
-                <th>Degrees C</th>
+                     <th>Date</th>
+                     <th>Time</th>
+                     <th>Degrees C</th>
   
-            </tr>
-        </thead>
-        <tbody>
+                 </tr>
+             </thead>
+             <tbody>
 
         
-            @foreach (var temperature in Model.Temperature)
-            {
-                <tr>
-                    <td>@temperature.Dato</td>
-                    <td>@temperature.Tidspunkt</td>
-                    <td>@temperature.Grader</td>
+                 @foreach (var temperature in Model.Temperature)
+                 {
+                     <tr>
+                         <td>@temperature.Dato</td>
+                         <td>@temperature.Tidspunkt</td>
+                         <td>@temperature.Grader</td>
                    
         
-                </tr>
-            }
-        </tbody>
-    </table>
+                     </tr>
+                  }
+            </tbody>
+         </table>
+         </div>
 
 
+        </div>
 
 
-     <table class=table>
-        <thead>
-            <tr>
+        <div class = "card card-flush h-xl-100">
+            <div style="margin:20px;">
+          
+                <h3>
+                    Electricity Prices
+                </h3>
+                <p>Price for energy in the last 24 hrs</p>
+        
+         <table class=table>
+            <thead>
+                <tr>
                 
-                <th>Date</th>
-                <th>Time</th>
-                <th>Degrees C</th>
-  
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var temperature in Model.Temperature)
-            {
-                <tr>
-                    <td>@temperature.Dato</td>
-                    <td>@temperature.Tidspunkt</td>
-                    <td>@temperature.Grader</td>
-                   
-        
+                    <th>Date</th>
+                    <th>Prise per kWh</th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+              
+                    <tr>
+                        <td>@DateTime.Now</td>
+                        <td>@Html.DisplayFor(model => model.ElectricityPrices)</td>
+                   
+                 </tr>
+           </tbody>
+           </table>
+           </div>
+        </div>
+
+
+
+    </div>
+
+    <div class="col-xl-8 mb-5 mb-xxl-10">
+        <div class="card card-flush h-xl-100" >
+            <div style="margin:20px;">
+            <h3 >Forecast</h3>
+            <p>Weather conditions for the next 24 hours</p>
+             <table class=table>
+                <thead>
+                    <tr>
+                
+                       <th>Temperature</th>
+                        <th>Conditions</th>
+                        <th>Cloud Cover</th>
+                        <th>Precipitation</th>
+                    </tr>
+               </thead>
+                <tbody>
+                 @foreach (var forecast in Model.Forecast)
+                 {
+                     <tr>
+                         <td>@forecast.temp</td>
+                         <td>@forecast.conditions</td>
+                         <td>@forecast.cloudcover</td>
+                         <td>@forecast.precip</td>
+                     </tr>
+                 }
+              </tbody>
+          </table>
+          </div>
+        </div>
+    </div>
+</div>
+
+ 
+
+
+     
+
+
+
+

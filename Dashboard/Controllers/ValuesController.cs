@@ -7,6 +7,7 @@ using CsvHelper.Configuration;
 using System.Globalization;
 using CsvHelper;
 using ServiceReference1;
+using System.Configuration;
 
 namespace Dashboard.Controllers
 {
@@ -14,21 +15,31 @@ namespace Dashboard.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
-        List<string> files = GetDirectoryFiles();
 
+        private readonly IConfiguration _config;
+
+        public ValuesController(IConfiguration config)
+        {
+            _config = config;
+        }
 
         [HttpGet]
 
         public string GetTotalinHour()
         {
+            var user = _config["FTP:User"];
+            var pass = _config["FTP:Password"];
+
+            List<string> files = GetDirectoryFiles(user.ToString(), pass.ToString());
             var energyValues = new List<EnergyValues>();
             DateTime oldDate = DateTime.Now.AddYears(-1).AddHours(-1);
             string date = oldDate.ToString("yyMMddHH");
+
             var match = files.FirstOrDefault(stringToCheck => stringToCheck.Contains(date));
 
             if (match != null)
             {
-                List<string> totalHour = GetEnergyProduction(match.ToString());
+                List<string> totalHour = GetEnergyProduction(match.ToString(), user, pass);
                 energyValues.Add(new EnergyValues
                 {
                     Date = oldDate.ToString("dd/MM/yyyy HH"),
@@ -49,11 +60,14 @@ namespace Dashboard.Controllers
             return convert;
         }
 
+
+
         [HttpPost("/forecast/{location}")]
         public string Post(string location)
         {
+            var password = _config["XML:Password"];
             ForecastServiceClient client = new();
-            var result = client.GetForecastAsync(location, "Jeger1studerende").Result.Body.GetForecastResult;
+            var result = client.GetForecastAsync(location, password.ToString()).Result.Body.GetForecastResult;
 
             var hourlyForecast = new List<ForecastValues>();
             var dayforecast = new List<string>();
@@ -76,17 +90,18 @@ namespace Dashboard.Controllers
 
             return convert;
         }
+         
 
 
-
-        public static List<string> GetDirectoryFiles()
+        public static List<string> GetDirectoryFiles(string user, string password)
         {
+     
             try
             {
                 FtpWebRequest request = (FtpWebRequest)WebRequest.Create("ftp://inverter.westeurope.cloudapp.azure.com/");
                 request.Method = WebRequestMethods.Ftp.ListDirectory;
 
-                request.Credentials = new NetworkCredential("studerende", "kmdp4gslmg46jhs");
+                request.Credentials = new NetworkCredential(user, password);
                 FtpWebResponse response = (FtpWebResponse)request.GetResponse();
                 Stream responseStream = response.GetResponseStream();
                 StreamReader reader = new StreamReader(responseStream);
@@ -107,12 +122,13 @@ namespace Dashboard.Controllers
 
         }
 
-        public static List<string> GetEnergyProduction(string file)
+        public static List<string> GetEnergyProduction(string file, string user, string pass)
         {
+            
             try
             {
                 FtpWebRequest request = (FtpWebRequest)WebRequest.Create("ftp://inverter.westeurope.cloudapp.azure.com/" + file);
-                request.Credentials = new NetworkCredential("studerende", "kmdp4gslmg46jhs");
+                request.Credentials = new NetworkCredential(user, pass);
 
                 FtpWebResponse response = (FtpWebResponse)request.GetResponse();
                 var stream = response.GetResponseStream();

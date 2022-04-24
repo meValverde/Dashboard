@@ -18,9 +18,10 @@ namespace Dashboard.Models
     }
 
     public class DashboardValues
-    { 
-        public List <EnergyValues>? Energy { get; set; }
-        public List <ForecastValues>? Forecast { get; set; }
-        public List <Temperatur>? Temperature { get; set; }
+    {
+        public List<EnergyValues>? Energy { get; set; }
+        public List<ForecastValues>? Forecast { get; set; }
+        public List<Temperatur>? Temperature { get; set; }
+        public string? ElectricityPrices {get;set;}
     }
 }
